@@ -15,7 +15,7 @@ Trying to implement some of dockers functionalities.
 - https://man7.org/linux/man-pages/man2/setns.2.html
 
 ## Task 2
-- Check out to the task 1 tag (`git checkout t2`).
+- Check out to the task 2 tag (`git checkout t2`).
 - Run a shell in a container using `./zocker run --name test-container 'sh'` and try executing `ps aux`. Although you have already placed the container's process in a separate PID namespace, you may observe that the command behaves the same as before. Try to understand the root cause and resolve it.
 - After resolving the previous issue, running `./zocker run` may cause some functionalities of your system to break. Read about mount namespace hierarchy and propagation, and resolve this issue as well.
 - Dissociate the container process's UTS namespace from the default. Also, set the hostname to the value of `--name` so that the `hostname` command prints the container name instead of the host machine name.
