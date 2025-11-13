@@ -5,6 +5,7 @@ SOURCES = main.c
 
 $(TARGET): $(SOURCES)
 	$(CC) $(CFLAGS) -o $(TARGET) $(SOURCES)
+	sudo setcap cap_sys_admin+ep $(TARGET)
 
 clean:
 	rm -f $(TARGET)

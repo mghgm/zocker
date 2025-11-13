@@ -5,13 +5,13 @@
 #include <sched.h>
 #include <unistd.h>
 #include <sys/wait.h>
+#include <sys/mount.h>
 
 enum COMMAND {
     NONE = 0,
     RUN = 10,
     EXEC = 11,
 };
-
 
 struct config {
     enum COMMAND subcommand;
@@ -39,6 +39,11 @@ int validate_config(struct config cfg) {
 int run_container(struct config cfg) {
     pid_t pid;
 
+    if (unshare(CLONE_NEWPID) != 0) {
+    	fprintf(stderr, "[ERR] Failed to unshare(2).");
+   		return 1;
+    }
+
     pid = fork();
     if (pid < 0) {
         return 1;
@@ -48,6 +53,7 @@ int run_container(struct config cfg) {
         execl("/bin/sh", "sh", "-c", cfg.command, NULL);
     } else {
         sleep(2);
+        waitpid(pid, NULL, 0);
         printf("[Parent] Stoping...\n");
     }
     return 0;
