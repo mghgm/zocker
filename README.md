@@ -23,3 +23,16 @@ Trying to implement some of dockers functionalities.
 - https://man7.org/linux/man-pages/man2/mount.2.html
 - https://man7.org/linux/man-pages/man7/namespaces.7.html
 - https://man7.org/linux/man-pages/man2/gethostname.2.html
+
+# Task 3
+- Check out to the task 3 tag (`git checkout t3`).
+- The ultimate goal is to change the root of a container started by following command to `/tmp/zocker/test-container` using `chroot(2)`.
+```
+./zocker run --name test-container 'sh'
+```
+- You may need to modify `setup_bin_dir` and `setup_lib_dir` in `src/setup.c`.
+- Verify your code using `pwd`, `cd`, and `ls`.
+### Useful Links
+- https://man7.org/linux/man-pages/man2/chroot.2.html
+- https://man7.org/linux/man-pages/man2/chdir.2.html
+- https://man7.org/linux/man-pages/man1/ldd.1.html
