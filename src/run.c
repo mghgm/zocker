@@ -43,6 +43,25 @@ int run_container(struct container cont) {
       return 1;
     }
 
+    if (chroot(container_dir) != 0) {
+      fprintf(stderr,
+              "[ERR] Failed to chroot into container directory for %s: %s\n",
+              cont.id, strerror(errno));
+      return 1;
+    }
+
+    if (chdir("/") != 0) {
+      fprintf(stderr, "[ERR] Failed to change directory to root: %s\n",
+              strerror(errno));
+      return 1;
+    }
+
+    if (mkdir("/proc", 0555) != 0) {
+      fprintf(stderr, "[ERR] Failed to create /proc directory: %s\n",
+              strerror(errno));
+      return 1;
+    }
+
     if (mount(NULL, "/proc", "proc", 0, NULL) != 0) {
       fprintf(stderr, "[ERR] Failed to remount /proc: %s\n", strerror(errno));
       return 1;

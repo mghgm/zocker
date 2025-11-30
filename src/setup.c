@@ -1,5 +1,6 @@
 #include <errno.h>
 #include <stdio.h>
+#include <stdlib.h>
 #include <sys/stat.h>
 
 #include "setup.h"
@@ -80,12 +81,22 @@ static int setup_bin_dir(const char container_dir[256]) {
     return 1;
   }
 
+  char command[512];
+  if (snprintf(command, sizeof(command), "cp /usr/bin/sh %s", bin_dir) < 0) {
+    return 1;
+  }
+  system(command);
+
+  if (snprintf(command, sizeof(command), "cp /usr/bin/ls %s", bin_dir) < 0) {
+    return 1;
+  }
+  system(command);
+
   return 0;
 }
 
 static int setup_lib_dir(const char container_dir[256]) {
   char lib_dir[256];
-  char lib32_dir[256];
   char lib64_dir[256];
 
   if (snprintf(lib_dir, sizeof(lib_dir), "%s/lib", container_dir) < 0) {
@@ -93,14 +104,6 @@ static int setup_lib_dir(const char container_dir[256]) {
   }
   if (mkdir(lib_dir, 0755) == -1) {
     fprintf(stderr, "[ERR] Failed to create lib directory %s\n", lib_dir);
-    return 1;
-  }
-
-  if (snprintf(lib32_dir, sizeof(lib32_dir), "%s/lib32", container_dir) < 0) {
-    return 1;
-  }
-  if (mkdir(lib32_dir, 0755) == -1) {
-    fprintf(stderr, "[ERR] Failed to create lib32 directory %s\n", lib32_dir);
     return 1;
   }
 
@@ -112,6 +115,43 @@ static int setup_lib_dir(const char container_dir[256]) {
     fprintf(stderr, "[ERR] Failed to create lib64 directory %s\n", lib64_dir);
     return 1;
   }
+
+  char command[512];
+  if (snprintf(command, sizeof(command),
+               "cp /lib/x86_64-linux-gnu/libc.so.6 %s", lib_dir) < 0) {
+    return 1;
+  }
+  system(command);
+
+  if (snprintf(command, sizeof(command), "cp /lib64/ld-linux-x86-64.so.2 %s",
+               lib64_dir) < 0) {
+    return 1;
+  }
+  system(command);
+
+  if (snprintf(command, sizeof(command),
+               "cp /lib/x86_64-linux-gnu/libselinux.so.1 %s", lib_dir) < 0) {
+    return 1;
+  }
+  system(command);
+
+  if (snprintf(command, sizeof(command),
+               "cp /lib/x86_64-linux-gnu/libc.so.6 %s", lib_dir) < 0) {
+    return 1;
+  }
+  system(command);
+
+  if (snprintf(command, sizeof(command),
+               "cp /lib/x86_64-linux-gnu/libpcre2-8.so.0 %s", lib_dir) < 0) {
+    return 1;
+  }
+  system(command);
+
+  if (snprintf(command, sizeof(command), "cp /lib64/ld-linux-x86-64.so.2 %s",
+               lib64_dir) < 0) {
+    return 1;
+  }
+  system(command);
 
   return 0;
 }
