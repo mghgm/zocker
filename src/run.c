@@ -15,6 +15,7 @@
 void container_from_config(struct config cfg, struct container *c) {
   strncpy(c->id, cfg.name, sizeof(c->id));
   strncpy(c->command, cfg.command, sizeof(c->command));
+  strncpy(c->base_dir, cfg.base_dir, sizeof(c->base_dir));
 }
 
 int run_container(struct container cont) {
